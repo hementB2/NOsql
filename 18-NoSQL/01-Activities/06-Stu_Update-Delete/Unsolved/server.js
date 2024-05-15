@@ -12,7 +12,7 @@ const client = new MongoClient(connectionStringURI);
 
 let db;
 
-const dbName = 'bookCollectionDB';
+const dbName = 'inventoryDB';
 
 client.connect()
   .then(() => {
@@ -51,24 +51,3 @@ app.get('/books', (req, res) => {
 });
 
 // TODO: Add Delete route that uses a filter to delete a single document by id
-// To delete a document, we need to convert the string id parameter to an ObjectId
-app.delete('/books/:id', (req, res) => {
-
-  // Wrap the id in the ObjectId class to instantiate a new instance
-  const bookId = new ObjectId(req.params.id);
-
-  // Use deleteOne() to delete one object
-  db.collection('bookCollection').deleteOne(
-    // This is the filter. We delete only the document that matches the _id provided in the specified parameter.
-    { _id: bookId }
-  )
-    .then(results => {
-      console.log(results);
-      res.send(
-        results.deletedCount ? 'Document deleted' : 'No document found!'
-      );
-    })
-    .catch(err => {
-      if (err) throw err;
-    });
-});
